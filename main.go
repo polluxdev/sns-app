@@ -1,15 +1,22 @@
 package main
 
 import (
-	"net/http"
+	"log"
+	"sns-app/config"
+	"sns-app/routes"
 
-	"github.com/labstack/echo/v4"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Mega Safrina")
-	})
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading env file")
+	}
+
+	config.DBInit()
+
+	e := routes.Init()
+
 	e.Logger.Fatal(e.Start(":1323"))
 }
